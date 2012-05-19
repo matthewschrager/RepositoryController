@@ -9,7 +9,7 @@
     <licenseUrl>http://pastebin.com/Aaxx2AMM</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Initial release.</releaseNotes>
+    <releaseNotes>Updated RepositoryController package reference.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>ASP.NET WebApi Repository RepositoryController OAuth</tags>
   </metadata>
