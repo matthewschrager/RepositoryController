@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Repository, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Repository, Version=1.0.1.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Repository.1.0.1.1\lib\net40\Repository.dll</HintPath>
+      <HintPath>..\packages\Repository.1.0.1.3\lib\net40\Repository.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
