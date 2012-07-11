@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Text;
 using System.Web.Http;
 using Newtonsoft.Json;
@@ -21,27 +22,28 @@ namespace RepositoryController
         protected abstract IRepository<TValue> Repository { get; }
         //===============================================================
         [RequireAuthorization]
-        public virtual HttpResponseMessage<IQueryable<TValue>> Get()
+        public virtual HttpResponseMessage Get()
         {
-            return new HttpResponseMessage<IQueryable<TValue>>(Repository.GetItemsContext().Objects);
+            return Request.CreateResponse(HttpStatusCode.OK, Repository.GetItemsContext().Objects);
         }
         //===============================================================
         [RequireAuthorization]
-        public virtual HttpResponseMessage<TValue> Get(TKey id)
+        public virtual HttpResponseMessage Get(TKey id)
         {
             using (var obj = Repository.Find(id))
             {
                 if (obj.Object == null)
-                    throw new HttpResponseException(HttpStatusCode.NotFound);
-                return new HttpResponseMessage<TValue>(obj.Object);
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound));
+                
+                return Request.CreateResponse(HttpStatusCode.OK, obj.Object);
             }
         }
         //===============================================================
         [RequireAuthorization]
-        public virtual HttpResponseMessage<String> Post(TValue obj)
+        public virtual HttpResponseMessage Post(TValue obj)
         {
             Repository.Store(obj);
-            return new HttpResponseMessage<String>(JsonConvert.SerializeObject(obj));
+            return Request.CreateResponse(HttpStatusCode.OK, obj);
         }
         //===============================================================
         [RequireAuthorization, AcceptVerbs("PATCH")]
@@ -70,27 +72,30 @@ namespace RepositoryController
         protected abstract IRepository<TValue> Repository { get; }
         //===============================================================
         [RequireAuthorization]
-        public virtual HttpResponseMessage<IQueryable<TValue>> Get()
+        public virtual HttpResponseMessage Get()
         {
             using (var obj = Repository.GetItemsContext())
             {
-                return new HttpResponseMessage<IQueryable<TValue>>(obj.Objects);
+                return Request.CreateResponse(HttpStatusCode.OK, obj.Objects);
             }
         }
         //===============================================================
         [RequireAuthorization]
-        public virtual HttpResponseMessage<TValue> Get(TKey1 key1, TKey2 key2)
+        public virtual HttpResponseMessage Get(TKey1 key1, TKey2 key2)
         {
             using (var obj = Repository.Find(key1, key2))
             {
-                return new HttpResponseMessage<TValue>(obj.Object);
+                if (obj.Object == null)
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound));
+
+                return Request.CreateResponse(HttpStatusCode.OK, obj.Object);
             }
         }
         //===============================================================
-        public virtual HttpResponseMessage<TValue> Post(TValue obj)
+        public virtual HttpResponseMessage Post(TValue obj)
         {
             Repository.Store(obj);
-            return new HttpResponseMessage<TValue>(obj);
+            return Request.CreateResponse(HttpStatusCode.OK, obj);
         }
         //===============================================================
         [RequireAuthorization]
