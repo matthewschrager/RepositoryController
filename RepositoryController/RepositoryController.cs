@@ -87,6 +87,11 @@ namespace RepositoryController
             }
         }
         //===============================================================
+        public virtual HttpResponseMessage<TValue> Post(TValue obj)
+        {
+            return Put(obj);
+        }
+        //===============================================================
         public virtual HttpResponseMessage<TValue> Put(TValue obj)
         {
             Repository.Store(obj);
