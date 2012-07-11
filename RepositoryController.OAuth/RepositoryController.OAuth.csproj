@@ -34,6 +34,9 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OAuth2DotNet, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\OAuth2DotNet.1.0.1.0\lib\net40\OAuth2DotNet.dll</HintPath>
@@ -45,10 +48,6 @@
     <Reference Include="Repository, Version=1.0.2.5, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Repository.1.0.2.5\lib\net40\Repository.dll</HintPath>
-    </Reference>
-    <Reference Include="RepositoryController, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RepositoryController.1.0.0.4\lib\net40\RepositoryController.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -98,6 +97,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RepositoryController\RepositoryController.csproj">
+      <Project>{694006C9-C5E3-4412-9444-AD675FB79CB4}</Project>
+      <Name>RepositoryController</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

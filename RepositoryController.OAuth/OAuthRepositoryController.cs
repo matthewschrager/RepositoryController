@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Newtonsoft.Json;
 using OAuth2DotNet;
 using Repository;
 
@@ -33,10 +35,10 @@ namespace RepositoryController.OAuth
         }
         //===============================================================
         [OAuthorize]
-        public override HttpResponseMessage<TValue> Put(TValue obj)
+        public override HttpResponseMessage<String> Post(TValue obj)
         {
             Repository.Store(obj);
-            return new HttpResponseMessage<TValue>(obj);
+            return new HttpResponseMessage<String>(JsonConvert.SerializeObject(obj));
         }
         //===============================================================
         [OAuthorize]
@@ -69,7 +71,7 @@ namespace RepositoryController.OAuth
         }
         //===============================================================
         [OAuthorize]
-        public override HttpResponseMessage<TValue> Put(TValue obj)
+        public override HttpResponseMessage<TValue> Post(TValue obj)
         {
             Repository.Store(obj);
             return new HttpResponseMessage<TValue>(obj);

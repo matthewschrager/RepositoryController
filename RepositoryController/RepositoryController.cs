@@ -38,7 +38,7 @@ namespace RepositoryController
         }
         //===============================================================
         [RequireAuthorization]
-        public virtual HttpResponseMessage<String> Put(TValue obj)
+        public virtual HttpResponseMessage<String> Post(TValue obj)
         {
             Repository.Store(obj);
             return new HttpResponseMessage<String>(JsonConvert.SerializeObject(obj));
@@ -88,11 +88,6 @@ namespace RepositoryController
         }
         //===============================================================
         public virtual HttpResponseMessage<TValue> Post(TValue obj)
-        {
-            return Put(obj);
-        }
-        //===============================================================
-        public virtual HttpResponseMessage<TValue> Put(TValue obj)
         {
             Repository.Store(obj);
             return new HttpResponseMessage<TValue>(obj);
