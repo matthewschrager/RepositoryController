@@ -9,7 +9,7 @@
     <licenseUrl>http://pastebin.com/Aaxx2AMM</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Updated reference to Repository package.</releaseNotes>
+    <releaseNotes>Added authorization for all controller actions by default. Security is now opt-out instead of opt-in.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>ASP.NET WebApi ApiController Repository</tags>
   </metadata>

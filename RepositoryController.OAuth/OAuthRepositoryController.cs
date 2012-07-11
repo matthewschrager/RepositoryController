@@ -18,7 +18,7 @@ namespace RepositoryController.OAuth
         [OAuthorize]
         public override HttpResponseMessage<IQueryable<TValue>> Get()
         {
-            return new HttpResponseMessage<IQueryable<TValue>>(Repository.GetItemsContext().Object.AsQueryable());
+            return new HttpResponseMessage<IQueryable<TValue>>(Repository.GetItemsContext().Objects);
         }
         //===============================================================
         [OAuthorize]
@@ -55,7 +55,7 @@ namespace RepositoryController.OAuth
         {
             using (var obj = Repository.GetItemsContext())
             {
-                return new HttpResponseMessage<IQueryable<TValue>>(obj.Object);
+                return new HttpResponseMessage<IQueryable<TValue>>(obj.Objects);
             }
         }
         //===============================================================
