@@ -37,27 +37,29 @@ namespace RepositoryController
             }
         }
         //===============================================================
-        public virtual HttpResponseMessage Post([FromBody]String jsonObj)
+        public virtual HttpResponseMessage Post(TValue obj)
         {
-            Repository.Store(JsonConvert.DeserializeObject<TValue>(jsonObj));
-            return Request.CreateResponse(HttpStatusCode.OK, jsonObj);
+            Repository.Store(obj);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
         //===============================================================
         [AcceptVerbs("PATCH")]
-        public virtual void Patch(PatchArguments<TKey> args)
+        public virtual HttpResponseMessage Patch(PatchArguments<TKey> args)
         {
             if (args.Key == null)
-                throw new ArgumentException("You must specify a key for the object to update.");
+                Request.CreateResponse(HttpStatusCode.BadRequest, "You must specify the key for the object to update.");
 
             if (args.UpdateType == null)
                 args.UpdateType = "set";
 
             Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), args.Key);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
         //===============================================================
-        public virtual void Delete(TKey key)
+        public virtual HttpResponseMessage Delete(TKey key)
         {
             Repository.Remove(key);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
         //===============================================================
     }
@@ -86,27 +88,29 @@ namespace RepositoryController
             }
         }
         //===============================================================
-        public virtual HttpResponseMessage Post([FromBody]String jsonObj)
+        public virtual HttpResponseMessage Post(TValue obj)
         {
-            Repository.Store(JsonConvert.DeserializeObject<TValue>(jsonObj));
-            return Request.CreateResponse(HttpStatusCode.OK, jsonObj);
+            Repository.Store(obj);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
         //===============================================================
-        public virtual void Delete(TKey1 key1, TKey2 key2)
+        public virtual HttpResponseMessage Delete(TKey1 key1, TKey2 key2)
         {
             Repository.Remove(key2);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
         //===============================================================
         [AcceptVerbs("PATCH")]
-        public virtual void Patch(PatchArguments<TKey1, TKey2> args)
+        public virtual HttpResponseMessage Patch(PatchArguments<TKey1, TKey2> args)
         {
             if (args.Key1 == null || args.Key2 == null)
-                throw new ArgumentException("You must specify both keys for the object to update.");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "You must specify both keys for the object to update.");
 
             if (args.UpdateType == null)
                 args.UpdateType = "set";
 
             Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), args.Key1, args.Key2);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
         //===============================================================
     }
