@@ -21,13 +21,11 @@ namespace RepositoryController
         //===============================================================
         protected abstract IRepository<TValue> Repository { get; }
         //===============================================================
-        [RequireAuthorization]
         public virtual HttpResponseMessage Get()
         {
             return Request.CreateResponse(HttpStatusCode.OK, Repository.GetItemsContext().Objects);
         }
         //===============================================================
-        [RequireAuthorization]
         public virtual HttpResponseMessage Get(TKey id)
         {
             using (var obj = Repository.Find(id))
@@ -39,14 +37,13 @@ namespace RepositoryController
             }
         }
         //===============================================================
-        [RequireAuthorization]
-        public virtual HttpResponseMessage Post(TValue obj)
+        public virtual HttpResponseMessage Post([FromBody]String jsonObj)
         {
-            Repository.Store(obj);
-            return Request.CreateResponse(HttpStatusCode.OK, obj);
+            Repository.Store(JsonConvert.DeserializeObject<TValue>(jsonObj));
+            return Request.CreateResponse(HttpStatusCode.OK, jsonObj);
         }
         //===============================================================
-        [RequireAuthorization, AcceptVerbs("PATCH")]
+        [AcceptVerbs("PATCH")]
         public virtual void Patch(PatchArguments<TKey> args)
         {
             if (args.Key == null)
@@ -58,7 +55,6 @@ namespace RepositoryController
             Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), args.Key);
         }
         //===============================================================
-        [RequireAuthorization]
         public virtual void Delete(TKey key)
         {
             Repository.Remove(key);
@@ -71,7 +67,6 @@ namespace RepositoryController
         //===============================================================
         protected abstract IRepository<TValue> Repository { get; }
         //===============================================================
-        [RequireAuthorization]
         public virtual HttpResponseMessage Get()
         {
             using (var obj = Repository.GetItemsContext())
@@ -80,7 +75,6 @@ namespace RepositoryController
             }
         }
         //===============================================================
-        [RequireAuthorization]
         public virtual HttpResponseMessage Get(TKey1 key1, TKey2 key2)
         {
             using (var obj = Repository.Find(key1, key2))
@@ -92,19 +86,18 @@ namespace RepositoryController
             }
         }
         //===============================================================
-        public virtual HttpResponseMessage Post(TValue obj)
+        public virtual HttpResponseMessage Post([FromBody]String jsonObj)
         {
-            Repository.Store(obj);
-            return Request.CreateResponse(HttpStatusCode.OK, obj);
+            Repository.Store(JsonConvert.DeserializeObject<TValue>(jsonObj));
+            return Request.CreateResponse(HttpStatusCode.OK, jsonObj);
         }
         //===============================================================
-        [RequireAuthorization]
         public virtual void Delete(TKey1 key1, TKey2 key2)
         {
             Repository.Remove(key2);
         }
         //===============================================================
-        [RequireAuthorization, AcceptVerbs("PATCH")]
+        [AcceptVerbs("PATCH")]
         public virtual void Patch(PatchArguments<TKey1, TKey2> args)
         {
             if (args.Key1 == null || args.Key2 == null)

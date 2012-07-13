@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 
 namespace RepositoryController
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class RequireAuthorizationAttribute : AuthorizeAttribute 
     {
         //===============================================================
@@ -17,9 +18,24 @@ namespace RepositoryController
         //===============================================================
         public bool Enabled { get; set; }
         //===============================================================
-        public override void OnAuthorization(System.Web.Http.Controllers.HttpActionContext actionContext)
+        protected bool AllowAnonymousDetected(HttpActionContext actionContext)
         {
-            if (!Enabled)
+            if (actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Count > 0)
+                return true;
+            if (actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Count > 0)
+                return true;
+
+            return false;
+        }
+        //===============================================================
+        protected bool BypassAuthorization(HttpActionContext actionContext)
+        {
+            return !Enabled || AllowAnonymousDetected(actionContext);
+        }
+        //===============================================================
+        public override void OnAuthorization(HttpActionContext actionContext)
+        {
+            if (BypassAuthorization(actionContext))
                 return;
 
             base.OnAuthorization(actionContext);
