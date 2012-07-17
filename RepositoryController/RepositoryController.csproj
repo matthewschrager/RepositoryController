@@ -41,9 +41,9 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Repository, Version=1.0.2.5, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Repository, Version=1.0.2.7, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Repository.1.0.2.5\lib\net40\Repository.dll</HintPath>
+      <HintPath>..\packages\Repository.1.0.2.7\lib\net40\Repository.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
