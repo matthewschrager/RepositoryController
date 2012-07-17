@@ -4,7 +4,7 @@ RepositoryController
 RepositoryController is a base class for ASP.NET [API controllers](http://www.asp.net/web-api) that takes (almost) all of the boilerplate out of creating basic CRUD functionality in your web APIs.
 
 Quick Start
-==========
+------------
 
 Two steps. Ready? Ready.
 
