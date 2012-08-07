@@ -57,15 +57,15 @@ namespace RepositoryController
         }
         //===============================================================
         [AcceptVerbs("PATCH")]
-        public virtual HttpResponseMessage Patch(PatchArguments<TKey> args)
+        public virtual HttpResponseMessage Patch(TKey id, PatchArguments args)
         {
-            if (args.Key == null)
+            if (id == null)
                 Request.CreateResponse(HttpStatusCode.BadRequest, "You must specify the key for the object to update.");
 
             if (args.UpdateType == null)
                 args.UpdateType = "set";
 
-            Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), args.Key);
+            Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), id);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
         //===============================================================
@@ -127,15 +127,15 @@ namespace RepositoryController
         }
         //===============================================================
         [AcceptVerbs("PATCH")]
-        public virtual HttpResponseMessage Patch(PatchArguments<TKey1, TKey2> args)
+        public virtual HttpResponseMessage Patch(TKey1 key1, TKey2 key2, PatchArguments args)
         {
-            if (args.Key1 == null || args.Key2 == null)
+            if (key1 == null || key2 == null)
                 return Request.CreateResponse(HttpStatusCode.BadRequest, "You must specify both keys for the object to update.");
 
             if (args.UpdateType == null)
                 args.UpdateType = "set";
 
-            Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), args.Key1, args.Key2);
+            Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), key1, key2);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
         //===============================================================
