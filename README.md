@@ -27,7 +27,8 @@ Creating a basic CRUD API controller with GET/POST/PATCH/DELETE functionality:
 ```C#
 public class MyObjectsController : RepositoryController<MyClass, String>
 {
-	// MyRepositoryInstance must be an instance of a class that implements IRepository, found here: https://github.com/matthewschrager/Repository
+	// MyRepositoryInstance must be an instance of a class that implements IRepository, 
+	// found here: https://github.com/matthewschrager/Repository
     protected override IRepository<MyClass> Repository
     {
         get { return MyRepositoryInstance; }
