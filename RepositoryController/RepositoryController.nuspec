@@ -12,6 +12,6 @@
     <description>$description$</description>
     <releaseNotes>Added authorization for all controller actions by default. Security is now opt-out instead of opt-in.</releaseNotes>
     <copyright>Copyright 2012</copyright>
-    <tags>ASP.NET WebApi ApiController Repository</tags>
+    <tags>ASP.NET WebApi ApiController Repository CRUD</tags>
   </metadata>
 </package>
