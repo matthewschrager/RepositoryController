@@ -23,57 +23,102 @@ namespace RepositoryController
         //===============================================================
         public virtual HttpResponseMessage Get()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, Repository.GetItemsContext().Objects);
-        }
-        //===============================================================
-        public virtual HttpResponseMessage Get(TKey id)
-        {
-            using (var obj = Repository.Find(id))
-            {
-                if (obj.Object == null)
-                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound));
-
-                return Request.CreateResponse(HttpStatusCode.OK, obj.Object);
-            }
-        }
-        //===============================================================
-        protected abstract TValue PostedObjectToStoredObject(TPost postedObj);
-        //===============================================================
-        public virtual HttpResponseMessage Post(TPost obj)
-        {
-            TValue storedObj = null;
             try
             {
-                storedObj = PostedObjectToStoredObject(obj);
+                using (var objects = Repository.GetItemsContext())
+                {
+                    return CreateSuccessResponse(HttpStatusCode.OK, objects.Objects);
+                }
             }
 
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Could not create " + typeof(TValue).Name + ". Error: " + e.Message);
+                return CreateFailureResponse(HttpStatusCode.InternalServerError, e.Message);
             }
-           
-            Repository.Store(storedObj);
-            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+        //===============================================================
+        public virtual HttpResponseMessage Get(TKey id)
+        {
+
+            try
+            {
+                using (var obj = Repository.Find(id))
+                {
+                    if (obj.Object == null)
+                        return CreateFailureResponse(HttpStatusCode.NotFound, "Could not find object with key " + id);
+
+                    return CreateSuccessResponse(HttpStatusCode.OK, obj.Object);
+                }
+            }
+
+            catch (Exception e)
+            {
+                return CreateFailureResponse(HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+        //===============================================================
+        public virtual HttpResponseMessage Post(TPost obj)
+        {
+            try
+            {
+                Repository.Store(PostedObjectToStoredObject(obj));
+                return Request.CreateResponse(HttpStatusCode.OK);
+
+            }
+
+            catch (Exception e)
+            {
+                return CreateFailureResponse(HttpStatusCode.InternalServerError, e.Message);
+            }
         }
         //===============================================================
         [AcceptVerbs("PATCH")]
         public virtual HttpResponseMessage Patch(TKey id, PatchArguments args)
         {
             if (id == null)
-                Request.CreateResponse(HttpStatusCode.BadRequest, "You must specify the key for the object to update.");
+                return CreateFailureResponse(HttpStatusCode.BadRequest, "You must specify the key for the object to update.");
 
             if (args.UpdateType == null)
                 args.UpdateType = "set";
 
-            Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), id);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), id);
+                return CreateSuccessResponse(HttpStatusCode.OK);
+
+            }
+
+            catch (Exception e)
+            {
+                return CreateFailureResponse(HttpStatusCode.InternalServerError, e.Message);
+            }
         }
         //===============================================================
         public virtual HttpResponseMessage Delete(TKey key)
         {
-            Repository.Remove(key);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                Repository.Remove(key);
+                return CreateSuccessResponse(HttpStatusCode.OK);
+            }
+
+            catch (Exception e)
+            {
+                return CreateFailureResponse(HttpStatusCode.InternalServerError, e.Message);
+            }
         }
+        //===============================================================
+        protected virtual HttpResponseMessage CreateSuccessResponse(HttpStatusCode statusCode, Object responseObj = null)
+        {
+            return Request.CreateResponse(statusCode, responseObj);
+        }
+        //===============================================================
+        protected virtual HttpResponseMessage CreateFailureResponse(HttpStatusCode statusCode, String errorMessage, Object responseObj = null)
+        {
+            return Request.CreateResponse(statusCode, responseObj);
+        }
+        //===============================================================
+        protected abstract TValue PostedObjectToStoredObject(TPost postedObj);
         //===============================================================
     }
 
@@ -84,60 +129,102 @@ namespace RepositoryController
         //===============================================================
         public virtual HttpResponseMessage Get()
         {
-            using (var obj = Repository.GetItemsContext())
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, obj.Objects);
+                using (var objects = Repository.GetItemsContext())
+                {
+                    return CreateSuccessResponse(HttpStatusCode.OK, objects.Objects);
+                }
+            }
+
+            catch (Exception e)
+            {
+                return CreateFailureResponse(HttpStatusCode.InternalServerError, e.Message);
             }
         }
         //===============================================================
         public virtual HttpResponseMessage Get(TKey1 key1, TKey2 key2)
         {
-            using (var obj = Repository.Find(key1, key2))
-            {
-                if (obj.Object == null)
-                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound));
 
-                return Request.CreateResponse(HttpStatusCode.OK, obj.Object);
-            }
-        }
-        //===============================================================
-        public abstract TValue PostedObjectToStoredObject(TPost postedObj);
-        //===============================================================
-        public virtual HttpResponseMessage Post(TPost obj)
-        {
-            TValue storedObj = null;
             try
             {
-                storedObj = PostedObjectToStoredObject(obj);
+                using (var obj = Repository.Find(key1, key2))
+                {
+                    if (obj.Object == null)
+                        return CreateFailureResponse(HttpStatusCode.NotFound, "Could not find object with keys {" + key1 + ", " + key2 + " }.");
+
+                    return CreateSuccessResponse(HttpStatusCode.OK, obj.Object);
+                }
             }
 
             catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Could not create " + typeof(TValue).Name + ". Error: " + e.Message);
+                return CreateFailureResponse(HttpStatusCode.InternalServerError, e.Message);
             }
-
-            Repository.Store(storedObj);
-            return Request.CreateResponse(HttpStatusCode.OK);
         }
         //===============================================================
-        public virtual HttpResponseMessage Delete(TKey1 key1, TKey2 key2)
+        public virtual HttpResponseMessage Post(TPost obj)
         {
-            Repository.Remove(key2);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                Repository.Store(PostedObjectToStoredObject(obj));
+                return Request.CreateResponse(HttpStatusCode.OK);
+
+            }
+
+            catch (Exception e)
+            {
+                return CreateFailureResponse(HttpStatusCode.InternalServerError, e.Message);
+            }
         }
         //===============================================================
         [AcceptVerbs("PATCH")]
         public virtual HttpResponseMessage Patch(TKey1 key1, TKey2 key2, PatchArguments args)
         {
             if (key1 == null || key2 == null)
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "You must specify both keys for the object to update.");
+                return CreateFailureResponse(HttpStatusCode.BadRequest, "You must specify the keys for the object to update.");
 
             if (args.UpdateType == null)
                 args.UpdateType = "set";
 
-            Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), key1, key2);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                Repository.Update(args.PathToProperty, args.UpdateDescriptor, Utility.ToUpdateType(args.UpdateType), key1, key2);
+                return CreateSuccessResponse(HttpStatusCode.OK);
+
+            }
+
+            catch (Exception e)
+            {
+                return CreateFailureResponse(HttpStatusCode.InternalServerError, e.Message);
+            }
         }
+        //===============================================================
+        public virtual HttpResponseMessage Delete(TKey1 key1, TKey2 key2)
+        {
+            try
+            {
+                Repository.Remove(key1, key2);
+                return CreateSuccessResponse(HttpStatusCode.OK);
+            }
+
+            catch (Exception e)
+            {
+                return CreateFailureResponse(HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+        //===============================================================
+        protected virtual HttpResponseMessage CreateSuccessResponse(HttpStatusCode statusCode, Object responseObj = null)
+        {
+            return Request.CreateResponse(statusCode, responseObj);
+        }
+        //===============================================================
+        protected virtual HttpResponseMessage CreateFailureResponse(HttpStatusCode statusCode, String errorMessage, Object responseObj = null)
+        {
+            return Request.CreateResponse(statusCode, responseObj);
+        }
+        //===============================================================
+        protected abstract TValue PostedObjectToStoredObject(TPost postedObj);
         //===============================================================
     }
 }

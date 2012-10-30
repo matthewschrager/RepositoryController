@@ -10,7 +10,7 @@
 	<projectUrl>https://github.com/matthewschrager/RepositoryController</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Added authorization for all controller actions by default. Security is now opt-out instead of opt-in.</releaseNotes>
+    <releaseNotes>Added ability to customize response messages.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>ASP.NET WebApi ApiController Repository CRUD</tags>
   </metadata>
