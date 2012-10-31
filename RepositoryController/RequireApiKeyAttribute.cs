@@ -29,8 +29,9 @@ namespace RepositoryController
                 return;
 
             // Find the api key header
-            var header = actionContext.Request.Headers.GetValues(HeaderName).FirstOrDefault();
-            if (header == null || !ValidateApiKey(header))
+            IEnumerable<string> headers;
+            var containsHeader = actionContext.Request.Headers.TryGetValues(HeaderName, out headers);
+            if (!containsHeader || !ValidateApiKey(headers.First()))
                 HandleUnauthorizedRequest(actionContext);
         }
         //===============================================================

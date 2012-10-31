@@ -13,5 +13,10 @@
     <releaseNotes>Added ability to customize response messages.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>ASP.NET WebApi ApiController Repository CRUD</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json"></dependency>
+      <dependency id="Repository"></dependency>
+      <dependency id="Microsoft.AspNet.WebApi"></dependency>
+    </dependencies>
   </metadata>
 </package>

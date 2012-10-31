@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Repository</id>
-    <version>1.0.2.10</version>
+    <version>1.0.2.12</version>
     <title>Repository</title>
     <authors>Matthew Schrager</authors>
     <owners>Matthew Schrager</owners>
@@ -14,7 +14,7 @@
     <copyright>Copyright Matthew Schrager 2012</copyright>
     <tags>Repository</tags>
     <dependencies>
-      <dependency id="AutoMapper" version="2.1.267" />
+      <dependency id="AutoMapper" version="[2.2.0]" />
     </dependencies>
   </metadata>
 </package>

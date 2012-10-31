@@ -46,9 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Repository, Version=1.0.2.10, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Repository, Version=1.0.2.12, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Repository.1.0.2.10\lib\net45\Repository.dll</HintPath>
+      <HintPath>..\packages\Repository.1.0.2.12\lib\net45\Repository.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -77,6 +77,7 @@
     <Compile Include="PatchArguments.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryController.cs" />
+    <Compile Include="RepositoryControllerBase.cs" />
     <Compile Include="RepositoryControllerWithPostType.cs" />
     <Compile Include="RequireApiKeyAttribute.cs" />
     <Compile Include="RequireAuthorizationAttribute.cs" />
